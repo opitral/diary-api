@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: diary-api
+  datasource:
+    url: jdbc:postgresql://localhost:5432/diary-db
+    username: user
+    password: password
+  devtools:
+    restart:
+      enabled: true
+
+server:
+  port: 8080
