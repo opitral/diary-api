@@ -7,6 +7,7 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -40,11 +41,10 @@ public class ExceptionHandlerController {
         return new ResponseEntity<>(CommonResponse.error("Constrains '" + constraintViolation.getPropertyPath() + "' " + constraintViolation.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
-    // TODO: Uncomment this block after implementing security
-//    @ExceptionHandler(AccessDeniedException.class)
-//    public ResponseEntity<CommonResponse<String>> handleAccessDeniedException(AccessDeniedException ex) {
-//        return new ResponseEntity<>(CommonResponse.error("Access denied: " + ex.getMessage()), HttpStatus.FORBIDDEN);
-//    }
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<CommonResponse<String>> handleAccessDeniedException(AccessDeniedException ex) {
+        return new ResponseEntity<>(CommonResponse.error("Access denied: " + ex.getMessage()), HttpStatus.FORBIDDEN);
+    }
 
     @ExceptionHandler(NoResourceFoundException.class)
     public ResponseEntity<CommonResponse<String>> handleNoResourceFoundException(NoResourceFoundException ex) {
