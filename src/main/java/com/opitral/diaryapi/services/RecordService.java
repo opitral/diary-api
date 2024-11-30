@@ -53,9 +53,27 @@ public class RecordService {
     }
 
     public List<RecordDto> getRecordsBetweenDates(LocalDate startDate, LocalDate endDate) {
+        if (startDate == null && endDate == null) {
+            throw new ValidationException("At least one date must be provided");
+        } else if (startDate == null) {
+            startDate = LocalDate.of(1970, 1, 1);
+        } else if (endDate == null) {
+            endDate = LocalDate.now();
+        }
+        if (startDate.isAfter(endDate)) {
+            throw new ValidationException("Start date must be before end date");
+        }
         return getBetweenDates(startDate, endDate).stream()
                 .map(this::buildRecordResponseDto)
                 .collect(Collectors.toList());
+    }
+
+    public RecordDto getRecordByDate(LocalDate date) {
+        RecordEntity record = recordRepository.findByDate(date);
+        if (record == null) {
+            throw new NoSuchEntityException(RecordEntity.class.getName(), "by date: " + date);
+        }
+        return buildRecordResponseDto(record);
     }
 
     public Long createRecord(RecordDto record) {

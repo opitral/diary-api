@@ -4,6 +4,7 @@ import com.opitral.diaryapi.common.CommonResponse;
 import com.opitral.diaryapi.dto.RecordDto;
 import com.opitral.diaryapi.services.RecordService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -29,9 +30,16 @@ public class RecordController {
         return ResponseEntity.ok(CommonResponse.ok(recordService.getRecordById(id)));
     }
 
-    @GetMapping("/between")
-    public ResponseEntity<CommonResponse<List<RecordDto>>> getRecordsBetweenDates(@RequestParam LocalDate startDate, @RequestParam LocalDate endDate) {
+    @GetMapping("/dates")
+    public ResponseEntity<CommonResponse<List<RecordDto>>> getRecordsBetweenDates(
+            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
+            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate) {
         return ResponseEntity.ok(CommonResponse.ok(recordService.getRecordsBetweenDates(startDate, endDate)));
+    }
+
+    @GetMapping("/dates/{date}")
+    public ResponseEntity<CommonResponse<RecordDto>> getRecordByDate(@PathVariable LocalDate date) {
+        return ResponseEntity.ok(CommonResponse.ok(recordService.getRecordByDate(date)));
     }
 
     @PostMapping

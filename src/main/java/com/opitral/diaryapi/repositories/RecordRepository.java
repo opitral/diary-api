@@ -11,6 +11,7 @@ import java.util.List;
 public interface RecordRepository extends JpaRepository<RecordEntity, Long> {
     List<RecordEntity> findAllByOrderByDateDesc();
     List<RecordEntity> findAllByDateBetween(LocalDate startDate, LocalDate endDate);
+    RecordEntity findByDate(LocalDate date);
     Boolean existsByDate(LocalDate date);
     Boolean existsByDateAndIdNot(LocalDate date, Long id);
 }
