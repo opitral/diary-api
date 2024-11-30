@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
+import java.time.format.DateTimeParseException;
+
 @ControllerAdvice
 public class ExceptionHandlerController {
 
@@ -59,6 +61,11 @@ public class ExceptionHandlerController {
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<CommonResponse<String>> handleMessageNotReadableException(HttpMessageNotReadableException ex) {
         return new ResponseEntity<>(CommonResponse.error("Malformed JSON request: " + ex.getMessage()), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(DateTimeParseException.class)
+    public ResponseEntity<CommonResponse<String>> handleDateTimeParseException() {
+        return new ResponseEntity<>(CommonResponse.error("Invalid date format. Expected format: yyyy-MM-dd"), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(Exception.class)

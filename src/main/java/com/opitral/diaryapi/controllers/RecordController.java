@@ -38,7 +38,9 @@ public class RecordController {
     }
 
     @GetMapping("/dates/{date}")
-    public ResponseEntity<CommonResponse<RecordDto>> getRecordByDate(@PathVariable LocalDate date) {
+    public ResponseEntity<CommonResponse<RecordDto>> getRecordByDate(
+            @PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date
+    ) {
         return ResponseEntity.ok(CommonResponse.ok(recordService.getRecordByDate(date)));
     }
 
